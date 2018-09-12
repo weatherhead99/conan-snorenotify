@@ -16,9 +16,9 @@ class SnorenotifyConan(ConanFile):
                "pushover" : [True,False]}
     default_options = "snore_send=False", \
                       "snore_daemon=False", \
-                      "snore_settings=False" \
-                      "builtin_backend=True" \
-                      "freedesktop_backend=False" \
+                      "snore_settings=False", \
+                      "builtin_backend=True", \
+                      "freedesktop_backend=False", \
                       "pushover=False"
                       
     generators = "cmake"
@@ -66,6 +66,7 @@ class SnorenotifyConan(ConanFile):
 
         cmake.configure(source_folder=sf)
         cmake.build()
+        cmake.install()
 
     def package(self):
         pass
