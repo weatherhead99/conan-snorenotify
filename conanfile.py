@@ -8,9 +8,10 @@ class SnorenotifyConan(ConanFile):
     url = "https://github.com/weatherhead99/conan-snorenotify"
     description = "Snorenotify is a multi platform Qt notification framework."
     settings = "os", "compiler", "build_type", "arch"
-    options = {"freedesktop" : [True,False],
-               "snore_daemon" : [True,False]}
-    default_options = "freedesktop=False", "snore_daemon=False"
+    options = {"snore_send" : [True,False],
+               "snore_daemon" : [True,False],
+               "snore_settings" : [True,False]}
+    default_options = "snore_send=False", "snore_daemon=False", "snore_settings=False"
     generators = "cmake"
     exports_sources = "build_with_conan.patch"
     requires="Qt/5.11.1@bincrafters/stable"
@@ -21,9 +22,6 @@ class SnorenotifyConan(ConanFile):
         if self.settings.os != "Linux":
             del self.options.freedesktop
 
-    def configure(self):
-        self.options["Qt"].qtquickcontrols = True
-
     def source(self):
         tools.get("https://github.com/KDE/%s/archive/v%s.tar.gz"
                   % (self.name,self.version), sha256=self.sha256)
@@ -32,16 +30,21 @@ class SnorenotifyConan(ConanFile):
     def build(self):
         cmake = CMake(self)
         sf = os.path.join(self.source_folder,"snorenotify-%s" % self.version)
-        cmake.definitions["WITH_QT4"] = "OFF"
-        if self.options["freedesktop"]:
-            cmake.definitions["WITH_FREEDESKTOP_FRONTEND"] = "ON"
-        else:
-            cmake.definitions["WITH_FREEDESKTOP_FRONTEND"] = "OFF"
 
         if self.options["snore_daemon"]:
-            cmake.definitions["WITH_SNORE_DAEMON"] = "ON"
+            cmake.definitions["BUILD_daemon"] = "ON"
         else:
-            cmake.definitions["WITH_SNORE_DAEMON"] = "OFF"
+            cmake.definitions["BUILD_daemon"] = "OFF"
+
+        if self.options["snore_send"]:
+            cmake.definitions["BUILD_snoresend"] = "ON"
+        else:
+            cmake.definitions["BUILD_snoresend"] = "OFF"
+
+        if self.options["snore_settings"]:
+            cmake.definitions["BUILD_settings"] = "ON"
+        else:
+            cmake.definitions["BUILD_settings"] = "OFF"
 
         cmake.configure(source_folder=sf)
         cmake.build()
