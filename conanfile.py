@@ -13,7 +13,7 @@ class SnorenotifyConan(ConanFile):
                "snore_settings" : [True,False]}
     default_options = "snore_send=False", "snore_daemon=False", "snore_settings=False"
     generators = "cmake"
-    exports_sources = "build_with_conan.patch"
+    exports_sources = "build_with_conan.patch","qtime_fix.patch"
     requires="Qt/5.11.1@bincrafters/stable"
     build_requires="extra-cmake-modules/5.50.0@weatherhead99/testing"
     sha256 = "2e3f5fbb80ab993f6149136cd9a14c2de66f48cabce550dead167a9448f5bed9"
@@ -26,6 +26,7 @@ class SnorenotifyConan(ConanFile):
         tools.get("https://github.com/KDE/%s/archive/v%s.tar.gz"
                   % (self.name,self.version), sha256=self.sha256)
         tools.patch(patch_file="build_with_conan.patch")
+        tools.patch(patch_file="qtime_fix.patch")
 
     def build(self):
         cmake = CMake(self)
