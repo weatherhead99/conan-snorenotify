@@ -22,7 +22,7 @@ class SnorenotifyConan(ConanFile):
             del self.options.freedesktop
 
     def configure(self):
-        self.options["Qt"].qtdeclarative = True
+        self.options["Qt"].qtquickcontrols = True
 
     def source(self):
         tools.get("https://github.com/KDE/%s/archive/v%s.tar.gz"
