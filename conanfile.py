@@ -10,8 +10,17 @@ class SnorenotifyConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     options = {"snore_send" : [True,False],
                "snore_daemon" : [True,False],
-               "snore_settings" : [True,False]}
-    default_options = "snore_send=False", "snore_daemon=False", "snore_settings=False"
+               "snore_settings" : [True,False],
+               "builtin_backend" : [True, False],
+               "freedesktop_backend" : [True,False],
+               "pushover" : [True,False]}
+    default_options = "snore_send=False", \
+                      "snore_daemon=False", \
+                      "snore_settings=False" \
+                      "builtin_backend=True" \
+                      "freedesktop_backend=False" \
+                      "pushover=False"
+                      
     generators = "cmake"
     exports_sources = "build_with_conan.patch","qtime_fix.patch"
     requires="Qt/5.11.1@bincrafters/stable"
@@ -22,6 +31,14 @@ class SnorenotifyConan(ConanFile):
         if self.settings.os != "Linux":
             del self.options.freedesktop
 
+    def configure(self):
+        if self.options.pushover:
+            self.output.info("pushover option enabled, requiring qtwebkit")
+            self.options["Qt"].qtwebsockets=True
+        if self.options.freedesktop_backend:
+            self.output.info("freedesktop option enabled, requiring qtdbus")
+            self.options["Qt"].qtdbus=True
+            
     def source(self):
         tools.get("https://github.com/KDE/%s/archive/v%s.tar.gz"
                   % (self.name,self.version), sha256=self.sha256)
