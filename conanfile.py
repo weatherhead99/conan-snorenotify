@@ -12,8 +12,8 @@ class SnorenotifyConan(ConanFile):
     default_options = "shared=False"
     generators = "cmake"
     exports_sources = "build_with_conan.patch"
-    requires="Qt/5.11.1@bincrafters/stable", \
-              "extra-cmake-modules/5.50.0@weatherhead99/testing"
+    requires="Qt/5.11.1@bincrafters/stable"
+    build_requires="extra-cmake-modules/5.50.0@weatherhead99/testing"
     sha256 = "7d9b13f8994ac18c08ec7e5dcf5bd335e11a4f6203d61ab0765c9e4085b11e7e"
     
     def source(self):
