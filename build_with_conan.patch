@@ -1,15 +1,15 @@
-Index: snorenotify-0.5.3/CMakeLists.txt
+Index: snorenotify-0.7.0/CMakeLists.txt
 ===================================================================
---- snorenotify-0.5.3.orig/CMakeLists.txt
-+++ snorenotify-0.5.3/CMakeLists.txt
-@@ -1,5 +1,10 @@
+--- snorenotify-0.7.0.orig/CMakeLists.txt
++++ snorenotify-0.7.0/CMakeLists.txt
+@@ -1,6 +1,10 @@
  project( SnoreNotify )
- cmake_minimum_required( VERSION 2.8.9 )
-+
+ cmake_minimum_required( VERSION 2.8.12 )
+ 
 +#use the conan file
 +include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 +conan_basic_setup()
 +
- set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules ${CMAKE_PREFIX_PATH}/share/apps/cmake/modules)
+ include(FeatureSummary)
  
- set(CMAKE_AUTOMOC ON)
+ find_package(ECM 1.7.0 REQUIRED NO_MODULE)
